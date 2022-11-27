@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="jumbotron pb-3">
+    <div class="d-flex justify-content-between align-items-center flex-wrap">
+      <div ><span class="h3">{{message.sender|title}}</span></div>
+      <span class="h5">{{message.created|date:"D m, g:i"}}</span>
+    </div>
+    <p class="lead my-5">{{message.message}}</p>
+    <div class="w-100 d-flex">
+      <a href="{% url 'inbox' %}" class="btn btn-dark"><i class="fa fa-arrow-left"></i> Back</a>
+      <button class="btn btn-info ml-auto" data-target="#replyForm" data-toggle="collapse"><i class="fa fa-reply"></i> Reply</button>
+    </div>
+    <form action="{% url 'message' message.sender.profile.id %}" method='post' class="collapse mt-3" id="replyForm">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="" class="form-label h6">Reply {{message.sender|title}}</label>
+        {{form.message}}
+      </div>
+      <button type="submit" class="btn btn-outline-info">Send</button>
+    </form>
+  </div>
+
+{% endblock content %}

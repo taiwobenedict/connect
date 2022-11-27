@@ -1,0 +1,65 @@
+  {% extends 'base.html' %}
+  
+  {% block content %}
+<div class="login-container">
+<div class="col-lg-6 login-form-1 mx-auto py-4 ">
+        <h3>Sign Up</h3>
+        {% if messages %}
+        {% for message in messages %}
+          <p class="alert alert-danger mb-0 message"> {{message}}</p>
+        {% endfor %}
+        {% endif %}
+        <form class="m-0 pb-0" method='post'>
+            {% csrf_token %}
+            <div class="form-group">
+                {{form.first_name}}
+                {% if form.firstname.errors %}
+                <div class="alert alert-danger pt-1 pb-0 list-group h6 font-weight-light">
+                  {{form.firstname.errors}}
+                </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{form.username}}
+                {% if form.username.errors %}
+                <div class="alert alert-danger pt-1 pb-0 list-group h6 font-weight-light">
+                  {{form.username.errors}}
+                </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{form.email}}
+                {% if form.email.errors %}
+                <div class="alert alert-danger pt-1 pb-0 list-group h6 font-weight-light">
+                  {{form.email.errors}}
+                </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+              {{form.password1}}
+                {% if form.password1.errors %}
+                <div class="alert alert-danger pt-1 pb-0 list-group h6 font-weight-light">
+                  {{form.password1.errors}}
+                </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{form.password2}}
+                {% if form.password2.errors %}
+                <div class="alert alert-danger pt-1 pb-0 list-group h6 font-weight-light">
+                  {{form.password2.errors}}
+                </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btnSubmit" value="Sign Up" />
+            </div>
+            <div class="form-group">
+                <a href="{% url 'login' %}" class="ForgetPwd">Login</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}
+
+

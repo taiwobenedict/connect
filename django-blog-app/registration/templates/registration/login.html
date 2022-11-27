@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+  
+  {% block content %}
+  <div class="login-container">
+
+    <div class="col-lg-6 login-form-1 mx-auto">
+      <h3>Login</h3>
+       {% include 'registration/flash_message.html' %}
+      <form method="post">
+          {% csrf_token%}
+          <div class="input-group">
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <i class="fa fa-user"></i>
+                </div>
+              </div>
+                {{form.username}}    
+          </div>
+          <div class="input-group my-3">
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <i class="fa fa-lock"></i>
+                </div>
+              </div>
+              {{form.password}}
+          </div>
+          <div class="form-group">
+              <input type="submit" class="btnSubmit" value="Login" />
+              
+          </div>
+          <div class="form-group d-flex justify-content-between">
+              <a href="{% url 'change-password' %}" class="ForgetPwd">Forget Password?</a>
+              <a href="{% url 'sign-up' %}" class="ForgetPwd">Sign Up</a>
+          </div>
+      </form>
+  </div>
+</div>
+  {% endblock content %}

@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% include 'registration/flash_message.html' %}
+  <div class="card">
+    <div class="card-header">
+      <h2 class="mb-5 text-dark">Your Messages</h2>
+      <ul class="nav nav-tabs card-header-tabs">
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" href="#inbox">Inbox</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#sent">Sent</a>
+        </li>
+      </ul>
+    </div>
+    <div class="card-body tab-content text-left">
+      <div class="tab-pane fade active show" id="inbox">
+        <div class="card-title h3 font-weight-light mb-4">{{total_unread}} Unread Messages</div>
+          <ul class="list-group-flush pl-0 pl-md-4">
+          <li class="list-group-item font-weight-bold  justify-content-between d-flex text-start flex-wrap">
+            <span class="">#</span>
+            <span class="">From</span>
+            <span class="d-none d-sm-inline">Messsage</span>
+            <span class="">Date</span>
+          </li>
+          {% for message in all_messages %}
+          <li class="list-group-item">
+            <a href="{% url 'message-detail' message.id %}" class="d-flex flex-wrap justify-content-between text-dark align-items-center text-muted {% if not message.is_read %} font-weight-bold {% endif %}">
+              <h6 class="m-0">{{forloop.counter}}</h6>
+              <span class="">{{message.sender|title}}</span>
+              <span class="d-none d-sm-inline">{{message.message|truncatechars:"30"}}</span>
+              <span class="">{{message.created|date:"D m"}}</span>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+        </div>
+      <div class="tab-pane fade" id="sent">
+          <div class="card-title h3 font-weight-light mb-4">{{sent_messages|length}} Sent Messages</div>
+           <ul class="list-group-flush pl-0 pl-md-4">
+          <li class="list-group-item font-weight-bold  justify-content-between d-flex text-start flex-wrap">
+            <span class="">#</span>
+            <span class="">To</span>
+            <span class="d-none d-sm-inline">Messsage</span>
+            <span class="">Date</span>
+          </li>
+          {% for message in sent_messages %}
+          <li class="list-group-item">
+            <a href="{% url 'message-detail' message.id %}" class="d-flex flex-wrap justify-content-between text-dark align-items-center">
+              <h6 class="m-0">{{forloop.counter}}</h6>
+              <span class="">{{message.reciever.username|title}}</span>
+              <span class="d-none d-sm-inline">{{message.message|truncatechars:"30"}}</span>
+              <span class="">{{message.created|date:"D m"}}</span>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+{% endblock %}
+  
+
+
+
+
+<div class="container">
+
+  <div class="inbox">
+    <h2>New Messsage({{total_unread}})</h2>
+    <div class="message-container">
+      {% for message in all_messages %} 
+      <a href="{% url 'message-detail' message.id %}">
+        <div class="message-info {% if not message.is_read %} message-read {% endif %}">
+
+            <p>{{message.receiver}}</p>
+            <p>{{message.message|truncatechars:"30"}}</p>
+            <p>{{message.created}}</p>
+          </div>
+      </a>
+      {% endfor %}
+      
+    </div>
+  </div>
+</div>

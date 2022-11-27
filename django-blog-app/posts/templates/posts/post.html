@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+
+    {% block content %}
+      <!-- Post Detail Starts -->
+      <div class="card">
+        <div class="card-header h5">Post Details</div>
+        <div class="card-body">
+          <div class="row">
+            {% if post.image.name != '' %}
+            <div class="col-lg-6">
+              <img src="{{post.ImageUrl}}" alt="" class="img-fluid mx-auto">
+            </div>
+            {% endif %}
+            <div class="{% if post.image.name != '' %}col-lg-6 {% else%} px-3{% endif %}">
+              <h4 class="card-title mt-3">
+                {{post.title|default_if_none:''}}
+              </h4>
+              <p class="lead">
+                {{post.body|linebreaksbr}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer d-flex align-items-center justify-content-between flex-wrap">
+          <!-- Button trigger modal -->
+          {% if post.owner == request.user %}
+          <div>
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
+              DELETE <i class="fa fa-trash"></i>
+            </button>
+            <button class="btn btn-info ml-2" data-target="#postForm" data-toggle="modal">EDIT</button>
+          </div>
+
+          <!-- Delele modal -->
+          <div class="modal fade" id="deleteModal">
+            <div class="modal-dialog d-flex my-0 justify-content-center align-items-center h-100">
+              <div class="modal-content bg-transparent border-0">
+                <h1 class="text-center text-light">Are you sure?</h1>
+                <a href="{% url 'delete-post' post.id %}" class="btn btn-danger mb-3">YES</a>
+                <button class="btn btn-info" data-dismiss="modal">NO</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Edit modal -->
+          <div class="modal" id="postForm">
+            <div class="modal-dialog">
+              <div class="modal-content p-0">
+                <form action="{% url 'update-post' post.id %}" method="post" class="card " enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <h6 class="card-header">Update Post</h6>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label>Choose image</label>
+                        {{ postForm.image }}
+                        <small class="form-text text-must">3mb max</small>
+                    </div>
+                    {{postForm.title}}
+                    {{ postForm.body }}
+                  </div>
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-info ml-auto">UPDATE</button>
+                    <button type="button" class="btn btn-dark ml-auto " data-dismiss="modal">CLOSE</button>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+          </div>
+          {% endif %}
+          <h6 >Likes <span class="badge badge-info ml-auto" id="tolal-like">{{post.total_likes}}</span></h6>
+        </div>
+      </div>
+      <!-- Post Details Ends -->
+
+      <!-- Comment Section -->
+      <div class="col-lg-9 p-0">
+        <!-- Comment Form -->
+
+        <div class="card my-5">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h3>Comments</h3>
+            <h6>Total <span class="badge badge-info" id="total-like">{{post.comments.all|length}}</span></h6>
+          </div>
+          <form method="post" id="commentForm">
+            {% csrf_token %}
+            <div id="post-id" >
+              {{commentForm.body}}
+            </div>
+            <button type="submit" class="btn btn-info btn-block mt-0 rounded-0">SUBMIT</button>
+          </form>
+          <div class="card-body p-0 ">
+            <div class="list-group-flush" id="commentList">
+              {% for comment in comments %}
+              <div class="list-group-item" >
+                <div class="media">
+                  <a href="{% url 'user-profile' comment.owner.profile.id %}"><img src="{{comment.owner.profile.ProfileImageUrl}}" alt=""
+                      class="img-fluid mr-3 img-size rounded-circle"></a>
+                  <div class="media-body">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap">
+                      <h5>{{comment.owner|title}}</h5>
+                      <p class="text-muted mb-1">{{comment.created}}</p>
+                    </div>
+                    <p>{{comment.body}}</p>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+  const form = document.getElementById('commentForm');
+  const commentor = document.getElementById('commentList')
+  const totalLike = document.getElementById('total-like')
+  
+    form.addEventListener('submit',PostComment)
+    
+    function PostComment(e){
+      e.preventDefault()
+      
+      const comment = document.getElementById('id_body');
+      const url = "{% url 'post-details' post.id %}"
+      function UpdateComment() {
+        const csrftoken = document.cookie.slice(10)
+        fetch(url, {
+          method: 'POST',
+          headers: {'X-CSRFToken': csrftoken, 'Content-type': 'application/json'},
+          credentials: 'same-origin',
+          body: JSON.stringify({'comment': comment.value})
+        }).then(response => response.json()).then((data) => {
+          const like = Number(totalLike.innerText) +  1
+          totalLike.innerText = like
+          const html = `
+           <div class="list-group-item">
+                <div class="media">
+                  <a href="/user_profile/${data.id}"><img src="${data.image}" alt=""
+                      class="img-fluid mr-3 img-size rounded-circle"></a>
+                  <div class="media-body">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap">
+                      <h5>${data.owner}</h5>
+                      <p class="text-muted mb-1">${data.created}</p>
+                    </div>
+                    <p>${data.body}</p>
+                  </div>
+                </div>
+              </div>
+          `
+
+          commentor.insertAdjacentHTML('afterbegin',html)
+          form.reset()
+        })
+      }
+
+      UpdateComment()
+    }
+    
+
+  </script>
+    {% endblock content %}

@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+  <div class="row">
+    <!-- Side Profile -->
+    <div class="col-lg-2 d-none d-lg-block pl-lg-0">
+      <div id="side-profile" class="sticky-side">
+        <div class="card">
+          <card class="card-header">
+            <h5 class="card-title text-center m-0">Profile</h5>
+          </card>
+          <img src="{{request.user.profile.CoverImageUrl}}" alt="" class="img-fluild" />
+          <div class="card-body side-overflow p-2">
+            
+            <div class="card-text text-center">
+             {{profile.intro}}
+            </div>
+          </div>
+          <div class="card-footer">
+            <a href="{% url 'user-profile' request.user.profile.id %}" class="btn btn-info btn-block">View</a>
+            </div>
+        </div>
+      </div>
+    </div>
+    <!-- Post -->
+    <div class="col ">
+      {% for post in posts %}
+      <div class="card mb-4 ">
+        <!-- post header -->
+        <div class="card-header">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <a href="{% url 'user-profile' post.owner.profile.id %}">
+                <img src="{{post.owner.profile.ProfileImageUrl}}" alt="" class="
+                      img-fluid
+                      rounded-circle
+                      d-inline-block
+                      b-box
+                      img-size
+                    " />
+              </a>
+              <h6 class="ml-2 d-inline-block">{{post.owner.username|title}}</h6>
+            </div>
+            <div class="date">{{post.created}}</div>
+          </div>
+        </div>
+        <!-- post body -->
+        <img src="{{post.ImageUrl}}" alt="" class="img-fluid" />
+        <div class="card-body">
+          <h4 class="card-title">{{post.title|default_if_none:''}}</h4>
+          <p class="card-text">
+            {% if post.body|length > 150 %}
+                {{post.body|linebreaksbr|slice:":150"}}...
+                <a href="{% url 'post-details' post.id %}">
+                  Read more
+                </a>
+            {% else %}
+              {{post.body|linebreaksbr}}  
+            {% endif %}
+          </p>
+           
+          
+        </div>
+        
+        <!-- post footer -->
+        <div class="card-footer">
+          <div class="d-flex align-items-center">
+            <div class="mr-3">
+                <i id="{{post.id}}" class="fa fa-thumbs-up {% if request.user in post.likes.all %} text-info {% endif %} likePost"></i>
+              <span class="badge bground-dark text-light {% if request.user in post.likes.all %} bground-important {% endif %}">{{post.total_likes}}</span>
+            </div>
+            <div class="ml-2">
+              <a href="{% url 'post-details' post.id %}">
+                <i class="fa fa-comment-alt text-dark"></i>
+              </a>
+              <span class="badge badge-dark "> {{post.comments.all|length}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      {% if search %}<p class="alert alert-info">No result found for "{{search}}"</p>{% else %}<h3>No Post Found!</h3>{% endif %}
+      {% endfor %}
+
+      <!-- End Spinner -->
+      <div class="cardContainer d-flex justify-content-center">
+        {% if posts.has_next %}
+        <div class="loading">
+          <div class="">
+            <div class="spinner-border mt-2" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
+      </div>
+    </div>
+    <!-- side post -->
+    <div class="col-md-4 d-none d-md-block">
+      <div id="side-post" class="sticky-side">
+
+        <!-- Card -->
+        <form method='post' action="{% url 'add-post' %}" class="card mb-3" enctype="multipart/form-data">
+          {% csrf_token %}
+          <h6 class="card-header">What's on your mind?</h6>
+          <div class="card-body">
+            <div class="custom-file">
+               {{ postForm.image }}
+               <label for="" class="custom-file-label">Choose Image</label>
+            </div>
+             {{postForm.title}}
+             <div class="textarea">
+               {{ postForm.body }}
+            </div>
+          </div>
+          <div class="card-footer"><button type="submit" class="btn btn-info ml-auto">POST</button></div>
+        </form>
+
+        <!-- Info/Statistic -->
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title m-0">Info</h5>
+          </div>
+          <div class="card-body p-0">
+            <ul class="list-group list-group-flush">
+              <li class="
+                    list-group-item
+                    d-flex
+                    justify-content-between
+                    align-items-center
+                  ">
+                Total Post
+                <span class="badge badge-info badge-pill">{{profile.owner.post.all|length}}</span>
+              </li>
+              <li class="
+                    list-group-item
+                    d-flex
+                    justify-content-between
+                    align-items-center
+                  ">
+                Inbox
+                <div>
+                  <h6 class="d-inline-block">new</h6>
+                  <span class="badge badge-info badge-pill">{{unread_messages}}</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <!-- <div class="card-footer"></div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="add-post-button p-3 text-light bg-info d-inline-block rounded-circle d-md-none" data-toggle="modal" data-target="#postForm"><i class="fa fa-plus"></i></div>
+  <div class="modal" id="postForm">
+      <div class="modal-dialog">
+        <div class="modal-content p-0">
+           <form method='post' action="{% url 'add-post' %}" class="card mb-3" enctype="multipart/form-data">
+          {% csrf_token %}
+          <h6 class="card-header">What's on your mind?</h6>
+          <div class="card-body">
+            <div class="custom-file">
+               {{ postForm.image }}
+               <label for="" class="custom-file-label">Choose Image</label>
+            </div>
+             {{postForm.title}}
+             <div class="textarea">
+               {{ postForm.body }}
+            </div>
+          </div>
+          <div class="card-footer d-flex justify-content-between">
+            <button type="button" class="btn btn-dark" data-dismiss="modal">CLOSE</button>
+            <button type="submit" class="btn btn-info ml-auto">POST</button>
+          </div>
+        </form>
+
+        </div>
+      </div>
+    </div>
+{%endblock content %}
+   
+
+
+   
