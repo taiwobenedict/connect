@@ -172,6 +172,7 @@ def update_profile(request, id):
     form = ProfileForm(instance=profile)
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES, instance=profile)
+        print(request.FILES)
         if form.is_valid():
             form = form.save(commit=False)
             form.owner = request.user

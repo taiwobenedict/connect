@@ -1,9 +1,2 @@
 env/
-Project.zip
-db.sqlite3
-static/
-bootstrap.js
-jquery.slim.min.js
-popper.min.js
-bootstrap.css
-icons/
+
