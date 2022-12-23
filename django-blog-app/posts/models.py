@@ -87,7 +87,7 @@ class Profile(models.Model):
 
     def save(self, *args, **kwargs):
         if self.profile_picture:
-            image_resize(self.profile_picture,500,500)
+            image_resize(self.profile_picture,800,800)
         if self.cover_picture:
             image_resize(self.cover_picture,500,500)
         super().save(*args, **kwargs)
@@ -96,14 +96,14 @@ class Profile(models.Model):
         try:
             url = self.profile_picture.url
         except:
-            url = '/image/Profile_images/kindpng_4517876.png'
+            url = 'https://mydjangoimage-bucket.s3.us-west-2.amazonaws.com/Default_images/kindpng_4517876.png'
         return url
 
     def CoverImageUrl(self):
         try:
             url = self.cover_picture.url
         except:
-            url = '/image/cover_images/kindpng_4517876.png'
+            url = 'https://mydjangoimage-bucket.s3.us-west-2.amazonaws.com/Default_images/kindpng_4517876.png'
         return url
 
 

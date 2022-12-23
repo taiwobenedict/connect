@@ -9,7 +9,7 @@
             <div class="card mb-4 mb-xl-4">
                 <div class="card-header">Profile Picture</div>
                 <!-- Profile picture image-->
-                <img class="img-account-profile rounded" id="blah"  src="{{profile.ProfileImageUrl}}" alt="" >
+                  <img class="img-account-profile rounded" id="blah"  src="{{profile.ProfileImageUrl}}" alt="" >
                 <div class="card-body text-center">
                   <!-- Profile picture help block-->
                   <div class="small font-italic text-muted my-3">JPG or PNG no larger than 5 MB</div>
@@ -131,4 +131,15 @@
           </div>
       </div>
   </form>
+<script>
+  const imgInp = document.getElementById('id_profile_picture')
+  imgInp.onchange = evt => {
+  const [file] = imgInp.files
+  if (file) {
+    blah.src = URL.createObjectURL(file)
+  }
+}
+
+console.log('hellow')
+</script>
 {% endblock content %}
