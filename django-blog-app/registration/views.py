@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from django.contrib.messages.api import success
 from django.shortcuts import redirect, render
 from .forms import ResetPassword, SignUpForm
 from django.contrib.auth import login, logout, authenticate
@@ -25,10 +24,10 @@ def sign_up(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            form.save()
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            authenticate(username=username, password=password)
+            user=  form.save(commit= False)
+            user.username = user.username.lower()
+            user.save()
+            login(request, user)
             return redirect('index')
         else:
             form = SignUpForm(request.POST)
