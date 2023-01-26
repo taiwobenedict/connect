@@ -45,7 +45,7 @@ class CommentForm(forms.ModelForm):
     model = Comment
     fields = ['body']
     widgets = {
-      'body': widgets.Textarea(attrs={'name':'comment','class':'form-control','rows':5})
+      'body': widgets.Textarea(attrs={'name':'comment','class':'form-control comment-value','rows':5})
     }
 
 class MessageForm(forms.ModelForm):

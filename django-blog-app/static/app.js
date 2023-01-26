@@ -1,7 +1,6 @@
 // Alert Disappear
 setTimeout(() => {
   document.querySelector(".message").remove();
-  console.log(["out"]);
 }, 3000);
 
 // Like Post Asynchroniously
@@ -9,7 +8,8 @@ document.body.addEventListener("click", likePost);
 function likePost(e) {
   if (e.target.classList.contains("likePost")) {
     e.preventDefault();
-    const like = e.target;
+    const like = e.target.firstElementChild;
+
 
     const id = like.id;
     like.nextElementSibling.classList.toggle("bground-important");
@@ -140,7 +140,7 @@ function GetData(entries) {
           `;
           cardContianer.insertAdjacentHTML("beforebegin", html);
         });
-          console.log(posts[1].page_has_next)
+    
         if (posts[1].page_has_next == false) {
           laodData.style.display = "none";
         }

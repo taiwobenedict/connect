@@ -121,7 +121,8 @@
     function PostComment(e){
       e.preventDefault()
       
-      const comment = document.getElementById('id_body');
+      const comment = document.querySelector('.comment-value');
+     
       const url = "{% url 'post-details' post.id %}"
       function UpdateComment() {
         const csrftoken = document.cookie.slice(10)

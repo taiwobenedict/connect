@@ -31,7 +31,7 @@ class Post(models.Model):
 
     def save(self, *args, **kwargs):
         if self.image:
-            image_resize(self.image, 512, 512)
+            image_resize(self.image, 1080, 1080)
         super().save(*args, **kwargs)
 
     def ImageUrl(self):

@@ -48,12 +48,12 @@
         <!-- post body -->
         <img src="{{post.ImageUrl}}" alt="" class="img-fluid" />
         <div class="card-body">
-          <h4 class="card-title">{{post.title|default_if_none:''}}</h4>
+          <h4 class="card-title">{{post.title|default_if_none:''}}</h4> 
           <p class="card-text">
             {% if post.body|length > 150 %}
                 {{post.body|linebreaksbr|slice:":150"}}...
                 <a href="{% url 'post-details' post.id %}">
-                  Read more
+                  Read more}
                 </a>
             {% else %}
               {{post.body|linebreaksbr}}  
@@ -73,8 +73,8 @@
             <div class="ml-2">
               <a href="{% url 'post-details' post.id %}">
                 <i class="fa fa-comment-alt text-dark"></i>
+                <span class="badge badge-dark "> {{post.comments.all|length}}</span>
               </a>
-              <span class="badge badge-dark "> {{post.comments.all|length}}</span>
             </div>
           </div>
         </div>
@@ -87,11 +87,11 @@
       <div class="cardContainer d-flex justify-content-center">
         {% if posts.has_next %}
         <div class="loading">
-          <div class="">
+          
             <div class="spinner-border mt-2" role="status">
               <span class="sr-only">Loading...</span>
             </div>
-          </div>
+  
         </div>
         {% endif %}
 
@@ -108,7 +108,7 @@
           <div class="card-body">
             <div class="custom-file">
                {{ postForm.image }}
-               <label for="" class="custom-file-label">Choose Image</label>
+               <label for="" class="custom-file-label ">Choose Image</label>
             </div>
              {{postForm.title}}
              <div class="textarea">
@@ -163,7 +163,7 @@
           <div class="card-body">
             <div class="custom-file">
                {{ postForm.image }}
-               <label for="" class="custom-file-label">Choose Image</label>
+               <label for="" class="custom-file-label" id="image-label">Choose Image</label>
             </div>
              {{postForm.title}}
              <div class="textarea">
@@ -179,6 +179,21 @@
         </div>
       </div>
     </div>
+
+    <!-- Preview image name -->
+    <script>
+      const images = document.querySelectorAll('.custom-file-input')
+      images.forEach(image => {
+        
+        image.onchange = function() {
+          const file = image.files[0]
+          if (file) {
+            image.nextElementSibling.textContent = file.name
+          }
+        }
+      })
+
+    </script>
 {%endblock content %}
    
 

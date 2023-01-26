@@ -16,7 +16,7 @@
                   <!-- Profile picture upload button-->
                   <div class="custom-file">
                    {{form.profile_picture}}
-                    <label for="ProfilePics" class="custom-file-label">Choose profile image</label>
+                    <label for="ProfilePics" class="custom-file-label profile-file-label">Choose profile image</label>
                   </div>
                   <!-- Short intro -->
                   <div class="mt-3">
@@ -88,7 +88,7 @@
                       <div class="row gx-3 mb-3">
                           <!-- Form Group (Username name)-->
                           <div class="col-md-6">
-                             {{form.username}}
+                             {{form.username|title}}
                           </div>
                           <!-- Form Group (email)-->
                           <div class="col-md-6 mt-sm-3 mt-md-0">
@@ -120,7 +120,7 @@
                           <div class="col-md-6  mt-sm-3 mt-md-0">
                             <div class="custom-file">
                               {{form.cover_picture}}
-                              <label for="coverPics" class="custom-file-label">Choose cover image</label>
+                              <label for="coverPics" class="custom-file-label cover-file-label">Choose cover image</label>
                             </div>
                           </div>
                       </div>
@@ -133,13 +133,27 @@
   </form>
 <script>
   const imgInp = document.getElementById('id_profile_picture')
+  const label_profile = document.querySelector('.profile-file-label')
   imgInp.onchange = evt => {
   const [file] = imgInp.files
   if (file) {
     blah.src = URL.createObjectURL(file)
+    label_profile.innerText = file.name
+ 
   }
 }
 
-console.log('hellow')
+
+  const image = document.getElementById('id_cover_picture')
+  const label = document.querySelector('.cover-file-label')
+
+  image.onchange = function() {
+    const file = image.files[0]
+    if (file) {
+      label.innerText = file.name
+    }
+  }
+
+
 </script>
 {% endblock content %}

@@ -48,9 +48,9 @@
           </li>
           {% for message in sent_messages %}
           <li class="list-group-item">
-            <a href="{% url 'message-detail' message.id %}" class="d-flex flex-wrap justify-content-between text-dark align-items-center">
+            <a href="{% url 'message-detail-unread' message.id %}" class="d-flex flex-wrap justify-content-between text-dark align-items-center">
               <h6 class="m-0">{{forloop.counter}}</h6>
-              <span class="">{{message.reciever.username|title}}</span>
+              <span class="">{{message.reciever.owner.username|title}}</span>
               <span class="d-none d-sm-inline">{{message.message|truncatechars:"30"}}</span>
               <span class="">{{message.created|date:"D m"}}</span>
             </a>

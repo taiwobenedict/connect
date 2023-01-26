@@ -17,4 +17,5 @@ urlpatterns = [
     path('inbox/', views.inbox, name= 'inbox'),
     path('message/<str:id>/', views.message_form, name= 'message'),
     path('message-detail/<str:id>/', views.message_detail, name= 'message-detail'),
+    path('message-sent/<str:id>/', views.message_detail_unread, name= 'message-detail-unread'),
 ]

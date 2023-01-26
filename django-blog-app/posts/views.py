@@ -293,3 +293,13 @@ def message_detail(request, id):
         'form': MessageForm()
     }
     return render(request, 'posts/message_detail.html', context)
+
+@login_required(login_url='login')
+def message_detail_unread(request, id):
+    message = Message.objects.get(pk=id)
+    context = {
+        'page': 'message_detail',
+        'message': message,
+        'form': MessageForm()
+    }
+    return render(request, 'posts/message_detail.html', context)
