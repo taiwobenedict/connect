@@ -66,9 +66,9 @@ class Profile(models.Model):
     username = models.CharField(max_length=30, null=True, blank=True)
     intro = models.CharField(max_length=50, null=True, blank=True)
     profile_picture = models.ImageField(
-        blank=True, upload_to="Profile_images/")
+        blank=True, upload_to="Profile_images/", default="cover_images/default.png")
     cover_picture = models.ImageField(
-        blank=True, upload_to="cover_images/")
+        blank=True, upload_to="cover_images/", default="profile_images/default.png")
     occupation = models.CharField(max_length=50, null=True, blank=True)
     about_me = models.TextField(blank=True, null=True)
     mobile = models.CharField(max_length=20, blank=True, null=True)
@@ -96,14 +96,14 @@ class Profile(models.Model):
         try:
             url = self.profile_picture.url
         except:
-            url = 'https://mydjangoimage-bucket.s3.us-west-2.amazonaws.com/Default_images/kindpng_4517876.png'
+            url = 'image/default.png'
         return url
 
     def CoverImageUrl(self):
         try:
             url = self.cover_picture.url
         except:
-            url = 'https://mydjangoimage-bucket.s3.us-west-2.amazonaws.com/Default_images/kindpng_4517876.png'
+            url = 'image/default.png'
         return url
 
 
