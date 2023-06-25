@@ -10,10 +10,6 @@ function likePost(e) {
     e.preventDefault();
     const like = e.target;
   
-
-
-
-    console.log(like)
     const id = like.id;
 
     like.nextElementSibling.classList.toggle("bground-important");
