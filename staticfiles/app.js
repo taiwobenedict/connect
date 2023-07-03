@@ -1,7 +1,6 @@
 // Alert Disappear
 setTimeout(() => {
   document.querySelector(".message").remove();
-  console.log(["out"]);
 }, 3000);
 
 // Like Post Asynchroniously
@@ -10,8 +9,13 @@ function likePost(e) {
   if (e.target.classList.contains("likePost")) {
     e.preventDefault();
     const like = e.target;
+  
 
+
+
+    console.log(like)
     const id = like.id;
+
     like.nextElementSibling.classList.toggle("bground-important");
     const likedElement = like.nextElementSibling.classList;
     let likedNumber = like.nextElementSibling;
@@ -140,7 +144,7 @@ function GetData(entries) {
           `;
           cardContianer.insertAdjacentHTML("beforebegin", html);
         });
-          console.log(posts[1].page_has_next)
+    
         if (posts[1].page_has_next == false) {
           laodData.style.display = "none";
         }

@@ -8,10 +8,10 @@ document.body.addEventListener("click", likePost);
 function likePost(e) {
   if (e.target.classList.contains("likePost")) {
     e.preventDefault();
-    const like = e.target.firstElementChild;
-
-
+    const like = e.target;
+  
     const id = like.id;
+
     like.nextElementSibling.classList.toggle("bground-important");
     const likedElement = like.nextElementSibling.classList;
     let likedNumber = like.nextElementSibling;
