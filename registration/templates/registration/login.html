@@ -34,5 +34,32 @@
           </div>
       </form>
   </div>
+  
 </div>
+
+<script>
+  var submit = document.querySelector('.btnSubmit')
+  submit.onclick = (e) => {
+    
+    fecthData()
+  }
+
+  function fecthData() {
+    
+      fetch('https://api.slingacademy.com/v1/sample-data/products')
+      .then(res => res.json()).then(data => {
+        const csrftoken = document.cookie.slice(10)
+        fetch('http://127.0.0.1:8000/registration/login/', {
+          method: 'POST',
+          headers: {'X-CSRFToken': csrftoken, 'Content-type': 'application/json'},
+          credentials: 'same-origin',
+          body: JSON.stringify({data: data.products})
+        }).then(res => console.log('success'))
+      })     
+
+  }
+
+</script>
+    
   {% endblock content %}
+

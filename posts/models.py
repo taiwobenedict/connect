@@ -96,14 +96,14 @@ class Profile(models.Model):
         try:
             url = self.profile_picture.url
         except:
-            url = 'https://mydjangoimage-bucket.s3.us-west-2.amazonaws.com/Default_images/kindpng_4517876.png'
+            url = 'https://ibb.co/Yk9xhdm'
         return url
 
     def CoverImageUrl(self):
         try:
             url = self.cover_picture.url
         except:
-            url = 'https://mydjangoimage-bucket.s3.us-west-2.amazonaws.com/Default_images/kindpng_4517876.png'
+            url = 'https://ibb.co/Yk9xhdm'
         return url
 
 

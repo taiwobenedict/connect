@@ -35,8 +35,20 @@ def sign_up(request):
     context = {'form': form}
     return render(request, 'registration/signup.html', context)
 
-
+import json
+from posts.models import Post
 def user_login(request):
+   
+  
+    if request.headers.get('Content-Type') == 'application/json':
+        print('hello')
+        data = json.load(request)['data']
+        for i in data:
+            print(i)
+            Post.objects.create(user= request.user, )
+            
+
+
     if request.user.is_authenticated:
         return redirect('index')
     form = LoginForm()
